@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线用户管理</title>
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="/css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-table.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-editable.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-switch/bootstrap-switch.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="/css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="/css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="/css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="/css/sys/user.css">
+    <link rel="stylesheet" href="/css/sys/global.css">
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container" v-show="showList">
+        <!--搜索表单-->
+        <div class="row">
+            <form class="form-inline" id="searchForm">
+
+
+                <div class="form-group">
+                    <label for="ipaddr"> 登录地址IP:</label>
+                    <input type="text" id="ipaddr" placeholder="请输入登录地址IP" name="ipaddr" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="loginName"> 登录名称:</label>
+                    <input type="text" id="loginName" placeholder="请输入登录名称" name="loginName" class="form-control">
+                </div>
+
+
+
+                <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+            </form>
+        </div>
+
+        <div class="row">
+            <!--表格列表-->
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+
+
+<!--jquery 脚本 -->
+<script src="/js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="/js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="/js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="/js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="/js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="/js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!-- 显示中文 -->
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!--blockUI的js-->
+<script src="/js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="/js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="/js/plugins/vue/vue.min.js"></script>
+<script src="/js/plugins/vue/axios.min.js"></script>
+<!--<script src="/ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="/js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+
+
+<!--layer-->
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="/js/common.js"></script>
+<script src="/js/monitor/online.js"></script>
+
+
+
+</body>
+</html>

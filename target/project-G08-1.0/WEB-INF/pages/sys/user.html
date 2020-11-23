@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息表管理</title>
+
+    <base href="/">
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="css/plugins/bootstrap-table/src/bootstrap-table.css">
+    <link rel="stylesheet" href="css/plugins/bootstrap-editable/bootstrap-editable.css">
+
+
+    <!--jquery-layout-->
+    <link rel="stylesheet" href="css/plugins/jquery-layout/jquery.layout-latest.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link  rel="stylesheet" href="css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="css/sys/user.css">
+    <link rel="stylesheet" href="css/sys/global.css">
+
+
+
+</head>
+<body>
+<div id="app">
+    <div class="pane ui-layout-center">
+        <div class="container" v-show="showList">
+            <div class="row">
+                <form class="form-horizontal" id="searchForm">
+
+                    <div class="col-md-5">
+                        <input type="hidden" name="deptId">
+                        <input type="hidden" name="deptName">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名称：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="userName" class="form-control" placeholder="请输入登录名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户状态：</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" name="status">
+                                    <option value="">所有</option>
+                                    <option :value="state.dictValue" v-for="state in userStateList">
+                                        {{state.dictLabel}}
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">创建时间：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="startTime" id="start" class="form-control" placeholder="开始时间"
+                                       style="width:105px;display: inline">~
+                                <input type="text" name="endTime" id="end" class="form-control" placeholder="结束时间"
+                                       style="width:105px;display: inline">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                    <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+                </form>
+            </div>
+            <div class="row">
+                <div id="toolbar">
+                    <div class="btn-group">
+                        <button shiro:hasPermission="sys:user:add" id="add" class="btn btn-primary btn-rounded btn-outline" @click="add">
+                            <i class="fa fa-plus"></i> 新增
+                        </button>
+                        <button shiro:hasPermission="sys:user:remove" id="remove" class="btn btn-danger btn-rounded btn-outline" @click="removeAll">
+                            <i class="fa fa-trash-o"></i> 删除
+                        </button>
+                    </div>
+                </div>
+
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+        <div class="container" v-show="showEdit">
+            <div class="row">
+                <form class="form-horizontal" id="form-user" :model="user">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">部门名称：{{user.dept.deptName}} {{user.dept.deptId}} </label>
+                        <div class="col-sm-9">
+                            <input type="text" name="deptName" readonly  v-model="user.dept.deptName"  class="form-control" placeholder="请输入部门名称">
+                            <input type="hidden" name="deptId" v-model="user.dept.deptId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用户名称：</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="userName" v-model="user.userName"  class="form-control" placeholder="请输入用户名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">密码：</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" v-model="user.password"  name="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮箱：</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="email" v-model="user.email" class="form-control" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">手机：</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="phonenumber" v-model="user.phonenumber" class="form-control" placeholder="请输入手机">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">性别：</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="sex" v-model="user.sex" >
+                                <option :value="item.dictValue" v-for="item in sexList">{{item.dictLabel}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态：{{user.status}}</label>
+                        <div class="col-sm-9">
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" checked  class="onoffswitch-checkbox" v-model="user.status"   id="state">
+                                    <label class="onoffswitch-label" for="state">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">岗位：{{user.postIds}}</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" multiple name="post" v-model="user.postIds">
+                                <option :value="item.postId" v-for="item in postList">{{item.postName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">角色：{{user.roleIds}}</label>
+                        <div class="col-sm-9">
+                            <div class="checkbox checkbox-success checkbox-inline i-checks" v-for="(item,index) in roleList">
+                                <input name="role" :id=`role${index}`  type="checkbox" :value="item.roleId" v-model="user.roleIds">
+                                <label :for=`role${index}`>
+                                    {{item.roleName}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-10">
+                            <input class="btn btn-primary" type="submit" value="提交">
+                            <input type="button" class="btn btn-danger" value="返回" @click="back">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="pane ui-layout-west">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-bank"></i>部门名称
+            </div>
+
+            <div class="box-tools">
+                <button class="btn btn-box-tool" title="管理机构" @click="dept()">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-box-tool changeDirection" title="展开" id="btnExpand" style="display: none">
+                    <i class="fa fa-chevron-up"></i>
+                </button>
+                <button class="btn btn-box-tool changeDirection" title="折叠" id="btnCollapse">
+                    <i class="fa fa-chevron-down"></i>
+                </button>
+                <button class="btn btn-box-tool" title="刷新" id="btnRefresh">
+                    <i class="fa fa-refresh"></i>
+                </button>
+
+            </div>
+        </div>
+        <div>
+            <ul id="tree" class="ztree"></ul>
+        </div>
+    </div>
+
+    <!--重置密码页面-->
+    <div class="col-md-12" id="passwordLayer" style="display: none">
+        <form class="form-horizontal" style="width:400px;" :model="user">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">账号：</label>
+                <div class="col-sm-8">
+                    <input type="hidden" v-model="user.userId" name="userId">
+                    <input type="text" name="loginName" v-model="user.userName" class="form-control" placeholder="请输入账号"
+                           readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">新密码：{{user.password}}</label>
+                <div class="col-sm-8">
+<!--                    <input type="password" class="form-control"  name="password" v-model="user.password" placeholder="请输入新密码" >-->
+                    <input type="password" class="form-control"  name="password"  placeholder="默认密码123" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!--jquery 脚本 -->
+<script src="js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!--blockUI的js-->
+<script src="js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="js/plugins/vue/vue.min.js"></script>
+<script src="js/plugins/vue/axios.min.js"></script>
+<!--<script src="ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/validate/messages_zh.min.js"></script>
+<script src="js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+<!--layout 布局-->
+<script src="js/plugins/jquery-layout/jquery.layout-latest.js"></script>
+
+<!--layer-->
+<script src="js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="js/common.js"></script>
+
+<!--自定义js-->
+<script src="js/common.js"></script>
+
+<!--
+shiro 内联js ，要求必须在当前面，不能外部js
+ 两个中括号之间=>调用提shiro内容
+${@ 对象.方法 }=>调用是对象.方法
+-->
+<script th:inline="javascript">
+    var editFlag = true;//[[${@permission.hasPermi('sys:user:edit')}]]  ;
+    var removeFlag = true;//[[${@permission.hasPermi('sys:user:remove')}]] ;
+
+</script>
+<script src="/js/sys/user.js"></script>
+</body>
+</html>

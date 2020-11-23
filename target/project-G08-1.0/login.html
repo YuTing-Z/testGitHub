@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>H+ 后台主题UI框架 - 登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <base href="/">
+
+    <link href="css/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/font-awesome/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/animate/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+
+</head>
+
+<body class="signin">
+<div class="signinpanel">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="signin-info">
+                <div class="logopanel m-b">
+                    <h1>[ W+ ]</h1>
+                </div>
+                <div class="m-b"></div>
+                <h4>欢迎使用 <strong>W+ 后台主题UI框架</strong></h4>
+                <ul class="m-b">
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> springmvc</li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> spring</li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> mybatis</li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> shiro</li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> hplus</li>
+                </ul>
+                <strong>还没有账号？ <a href="/register.html">立即注册&raquo;</a></strong>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <form method="post" id="fromLogin">
+                <h4 class="no-margins">登录：</h4>
+                <p class="m-t-md">登录到H+后台主题UI框架</p>
+                <input type="text" class="form-control uname" name="userName" value="admin" placeholder="用户名"/>
+                <input type="password" class="form-control pword m-b" name="password" value="123" placeholder="密码"/>
+                <div class="row m-t">
+                    <div class="col-xs-6">
+                        <input type="text" name="validateCode" class="form-control code" placeholder="验证码" maxlength="5" autocomplete="off" style="margin-top: 0px">
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="javascript:void(0);" title="点击更换验证码">
+                            <img src="/kaptcha/kaptchaImage" class="imgcode" width="95%"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="checkbox-custom" style="margin-top: 10px">
+                    <input type="checkbox" id="rememberme" name="rememberMe" > 记住我</label>
+                </div>
+                <a class="btn btn-success btn-block" id="btnLogin">登录</a>
+            </form>
+        </div>
+    </div>
+    <div class="signup-footer">
+        <div class="pull-left">
+            &copy; 2019 All Rights Reserved. W+
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/plugins/jquery/jquery.min.js?v=2.1.4"></script>
+
+<script src="js/plugins/bootstrap/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/plugins/vue/vue.min.js"></script>
+<script src="js/plugins/vue/iview.min.js"></script>
+<script src="js/plugins/blockUI/jquery.blockUI.js"></script>
+
+
+<!-- 第三方插件 -->
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/hplus.js?v=4.1.0"></script>
+<script src="js/contabs.js"></script>
+
+<!--公共样式 -->
+<script src="js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+
+        $('.imgcode').click(function() {
+            var url = "/kaptcha/kaptchaImage";
+            $(".imgcode").attr("src", url);
+        });
+
+        $("#btnLogin").click(function (event) {
+            $.ajax({
+                url: "/sys/user/login",
+                type: "post",
+                data: $("#fromLogin").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status == 200) {
+                        window.location.href = "/index.html";
+                    } else {
+                        $.modal.alertError(res.msg);
+                        event.preventDefault();
+                        return false;
+                    }
+                }
+            })
+        });
+    })
+</script>
+
+</body>
+
+</html>

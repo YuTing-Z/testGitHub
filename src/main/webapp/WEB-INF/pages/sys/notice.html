@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知公告表管理</title>
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="/css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-table.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-editable.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-switch/bootstrap-switch.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="/css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="/css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="/css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="/css/sys/user.css">
+    <link rel="stylesheet" href="/css/sys/global.css">
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container" v-show="showList">
+        <div class="row">
+            <form class="form-inline" id="searchForm">
+
+
+                <div class="form-group">
+                    <label for="noticeTitle"> 公告标题:</label>
+                    <input type="text" id="noticeTitle" placeholder="请输入公告标题" name="noticeTitle" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="noticeType"> 公告类型:</label>
+                    <select name="status" id="noticeType" class="form-control" style="width: 160px">
+                        <option value="">所有</option>
+                        <option :value="item.dictValue" v-for="item in noticeTypeList">{{item.dictLabel}}</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="status"> 公告状态:</label>
+
+                    <select name="status" id="status" class="form-control" style="width: 160px">
+                        <option value="">所有</option>
+                        <option :value="item.dictValue" v-for="item in noticeStateList">{{item.dictLabel}}</option>
+                    </select>
+                </div>
+
+
+                <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+            </form>
+        </div>
+        <div class="row">
+            <div id="toolbar">
+                <div class="btn-group">
+                    <button id="add" class="btn btn-primary btn-rounded btn-outline" @click="add">
+                        <i class="fa fa-plus"></i> 新增
+                    </button>
+                    <button id="remove" class="btn btn-danger btn-rounded btn-outline" onclick="$.operate.remove();">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                </div>
+            </div>
+
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+    <div class="container" v-show="!showList">
+        <div class="row">
+            <form class="form-horizontal" id="form-notice" :model="notice">
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="noticeId" v-model="notice.noticeId" >
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">公告标题</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="noticeTitle" v-model="notice.noticeTitle" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">公告类型</label>
+                    <div class="col-sm-8">
+                        <div class="radio radio-success radio-inline i-checks" v-for="(item,index) in noticeTypeList">
+                            <input name="noticeType" :id=`type${index}` type="radio" :value="item.dictValue" v-model="notice.noticeType"  >
+                            <label :for="item.dictCode">
+                                {{item.dictLabel}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">公告内容</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="noticeContent" v-model="notice.noticeContent" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">状态</label>
+                    <div class="col-sm-8">
+                        <div class="radio radio-success radio-inline i-checks" v-for="(item,index) in noticeStateList">
+                            <input name="status" :id=`state${index}` type="radio" :value="item.dictValue" v-model="notice.status"  >
+                            <label :for="item.dictCode">
+                                {{item.dictLabel}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">创建者</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="createBy" v-model="notice.createBy" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">创建时间</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="createTime" v-model="notice.createTime" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">更新者</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="updateBy" v-model="notice.updateBy" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">更新时间</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="updateTime" v-model="notice.updateTime" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">备注</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="remark" v-model="notice.remark" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-9">
+                        <input class="btn btn-primary" type="submit" value="提交">
+                        <input type="button" class="btn btn-danger" value="返回" @click="back">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--jquery 脚本 -->
+<script src="/js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="/js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="/js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="/js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="/js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="/js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!-- 显示中文 -->
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!--blockUI的js-->
+<script src="/js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="/js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="/js/plugins/vue/vue.min.js"></script>
+<script src="/js/plugins/vue/axios.min.js"></script>
+<!--<script src="/ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="/js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+
+
+<!--layer-->
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="/js/common.js"></script>
+<script src="/js/sys/notice.js"></script>
+
+
+</body>
+</html>

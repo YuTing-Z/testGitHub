@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单权限表管理</title>
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="/css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/src/bootstrap-table.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-editable/bootstrap-editable.css">
+
+
+    <!--jquery-layout-->
+    <link rel="stylesheet" href="/css/plugins/jquery-layout/jquery.layout-latest.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="/css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="/css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="/css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-validator/bootstrapValidator.css">
+    <!--bootstrap-treetable样式-->
+    <!--<link rel="stylesheet" href="/css/plugins/bootstrap-treetable/bootstrap-treetable.css">-->
+    <!--bootstrapTable-treegrid样式-->
+    <link rel="stylesheet" href="/css/plugins/jquery-treegrid/css/jquery.treegrid.css">
+
+    <!--字体动画-->
+    <link rel="stylesheet" href="/css/plugins/animate/animate.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="/css/sys/user.css">
+    <link rel="stylesheet" href="/css/sys/global.css">
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container" v-show="showList">
+        <div class="row">
+            <form class="form-inline" id="searchForm">
+                <div>
+
+                          <div class="form-group">
+                            <label class=" control-label"> 菜单名称:</label>
+                            <input type="text" placeholder="请输入菜单名称" name="menuName" class="form-control">
+                          </div>
+
+
+                    <a href="javascript:void(0);" class="btn btn-primary btn-rounded"
+                       onclick="$.treegrid.refresh()">搜索</a>
+                    <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+                </div>
+
+            </form>
+        </div>
+        <div class="row">
+            <div id="toolbar">
+                <div class="btn-group">
+                    <button id="add" class="btn btn-primary btn-rounded btn-outline" @click="add">
+                        <i class="fa fa-plus"></i> 新增
+                    </button>
+                    <button id="remove" class="btn btn-danger btn-rounded btn-outline" onclick="$.operate.remove();">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                    <button class="btn btn-info btn-rounded btn-outline" onclick="$.treegrid.toggle();">
+                        <i class="fa fa-exchange"></i> 展开/折叠
+                    </button>
+                </div>
+            </div>
+
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+    <div class="container" v-show="!showList">
+        <div class="row">
+            <form class="form-horizontal" id="form-menu" :model="menu">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">上级菜单：{{menu.parentId}}-{{menu.parentMenuName}}</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <input type="hidden" name="parentId" id="parentId" v-model="menu.parentId"
+                                   class="form-control">
+                            <input type="text" name="parentMenuName" id="parentMenuName" readonly
+                                   @click="selectMenuTree" v-model="menu.parentMenuName" class="form-control"
+                                   placeholder="请选择上级菜单">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" name="deptId">
+                    <label class="col-sm-3 control-label">菜单类型：{{menu.menuType}}</label>
+                    <div class="col-sm-7">
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="menuType" id="type1" type="radio" value="M" v-model="menu.menuType">
+                            <label for="type1">
+                                目录
+                            </label>
+                        </div>
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="menuType" id="type2" type="radio" value="C" v-model="menu.menuType">
+                            <label for="type2">
+                                菜单
+                            </label>
+                        </div>
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="menuType" id="type3" type="radio" value="F" v-model="menu.menuType">
+                            <label for="type3">
+                                按钮
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">菜单名称：{{menu.menuName}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="menuName" v-model="menu.menuName" class="form-control"
+                               placeholder="请输入菜单名称">
+                    </div>
+                </div>
+
+                <div class="form-group" v-if="menu.menuType!='M'">
+                    <label class="col-sm-3 control-label">请求地址：{{menu.url}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" v-model="menu.url" name="url" placeholder="请输入请求地址">
+                    </div>
+                </div>
+
+                <div class="form-group" v-if="menu.menuType!='M'">
+                    <label class="col-sm-3 control-label">权限标识：{{menu.perms}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="perms" v-model="menu.perms" class="form-control" placeholder="请输入权限标识">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">显示排序：{{menu.orderNum}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="orderNum" v-model="menu.orderNum" class="form-control"
+                               placeholder="请输入显示排序">
+                    </div>
+                </div>
+
+                <div class="form-group" v-if="menu.menuType=='M' ">
+                    <label class="col-sm-3 control-label">图标：{{menu.icon}}</label>
+                    <div class="col-sm-7">
+
+                        <input type="text" id="icon" name="icon" readonly @click="selectIcon" v-model="menu.icon"
+                               class="form-control" placeholder="请选择图标">
+                        <div style="display: none" id="iconDiv" class="animated flipInX">
+                            <iframe src="/sys/menu/icon" frameborder="0" width="100%"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">菜单状态：{{menu.visible}}</label>
+                    <div class="col-sm-7">
+                        <div class="radio radio-success radio-inline i-checks" v-for="(item,index) in menuStateList">
+                            <input name="visible" :id=`state${index}` type="radio" :value="item.dictValue"
+                                   v-model="menu.visible">
+                            <label :for=`state${index}`>
+                                {{item.dictLabel}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-9">
+                        <input class="btn btn-primary" type="submit" value="提交">
+                        <input type="button" class="btn btn-danger" value="返回" @click="back">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--jquery 脚本 -->
+<script src="/js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="/js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="/js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="/js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="/js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="/js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!--blockUI的js-->
+<script src="/js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="/js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="/js/plugins/vue/vue.min.js"></script>
+<script src="/js/plugins/vue/axios.min.js"></script>
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--bootstrap-treetable脚本-->
+<!--<script src="/js/plugins/bootstrap-treetable/bootstrap-treetable.js"></script>-->
+<!-- bootstrapTable-treegrid脚本  -->
+<script src="/js/plugins/bootstrap-table/src/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+<script src="/js/plugins/jquery-treegrid/js/jquery.treegrid.js"></script>
+
+
+<!--select2-->
+<script src="/js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+
+<!--layout 布局-->
+<script src="/js/plugins/jquery-layout/jquery.layout-latest.js"></script>
+
+<!--layer-->
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="/js/common.js"></script>
+<script src="/js/sys/menu.js"></script>
+
+
+</body>
+</html>

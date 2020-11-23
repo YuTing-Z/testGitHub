@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.wanho.mapper.sys.OperLogMapper">
+    <resultMap id="OperLogResult" type="OperLog" >
+        <id column="oper_id" property="operId"/><!-- 日志主键 -->
+        <result column="title" property="title"/><!-- 模块标题 -->
+        <result column="business_type" property="businessType"/><!-- 业务类型（0其它 1新增 2修改 3删除） -->
+        <result column="method" property="method"/><!-- 方法名称 -->
+        <result column="request_method" property="requestMethod"/><!-- 请求方式 -->
+        <result column="operator_type" property="operatorType"/><!-- 操作类别（0其它 1后台用户 2手机端用户） -->
+        <result column="oper_name" property="operName"/><!-- 操作人员 -->
+        <result column="dept_name" property="deptName"/><!-- 部门名称 -->
+        <result column="oper_url" property="operUrl"/><!-- 请求URL -->
+        <result column="oper_ip" property="operIp"/><!-- 主机地址 -->
+        <result column="oper_location" property="operLocation"/><!-- 操作地点 -->
+        <result column="oper_param" property="operParam"/><!-- 请求参数 -->
+        <result column="json_result" property="jsonResult"/><!-- 返回参数 -->
+        <result column="status" property="status"/><!-- 操作状态（0正常 1异常） -->
+        <result column="error_msg" property="errorMsg"/><!-- 错误消息 -->
+        <result column="oper_time" property="operTime"/><!-- 操作时间 -->
+    </resultMap>
+
+    <sql id="selectOperLog">
+        select oper_id,title,business_type,method,request_method,operator_type,oper_name,dept_name,oper_url,oper_ip,oper_location,oper_param,json_result,status,error_msg,oper_time from sys_oper_log
+    </sql>
+    <insert id="insertOperLog" parameterType="OperLog" useGeneratedKeys="true" keyProperty="operId">
+        insert into sys_oper_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''"> title,</if>
+            <if test="businessType != null"> business_type,</if>
+            <if test="method != null and method != ''"> method,</if>
+            <if test="requestMethod != null and requestMethod != ''"> request_method,</if>
+            <if test="operatorType != null"> operator_type,</if>
+            <if test="operName != null and operName != ''"> oper_name,</if>
+            <if test="deptName != null and deptName != ''"> dept_name,</if>
+            <if test="operUrl != null and operUrl != ''"> oper_url,</if>
+            <if test="operIp != null and operIp != ''"> oper_ip,</if>
+            <if test="operLocation != null and operLocation != ''"> oper_location,</if>
+            <if test="operParam != null and operParam != ''"> oper_param,</if>
+            <if test="jsonResult != null and jsonResult != ''"> json_result,</if>
+            <if test="status != null"> status,</if>
+            <if test="errorMsg != null and errorMsg != ''"> error_msg,</if>
+            <if test="operTime != null"> oper_time,</if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''"> #{title},</if>
+            <if test="businessType != null"> #{businessType},</if>
+            <if test="method != null and method != ''"> #{method},</if>
+            <if test="requestMethod != null and requestMethod != ''"> #{requestMethod},</if>
+            <if test="operatorType != null"> #{operatorType},</if>
+            <if test="operName != null and operName != ''"> #{operName},</if>
+            <if test="deptName != null and deptName != ''"> #{deptName},</if>
+            <if test="operUrl != null and operUrl != ''"> #{operUrl},</if>
+            <if test="operIp != null and operIp != ''"> #{operIp},</if>
+            <if test="operLocation != null and operLocation != ''"> #{operLocation},</if>
+            <if test="operParam != null and operParam != ''"> #{operParam},</if>
+            <if test="jsonResult != null and jsonResult != ''"> #{jsonResult},</if>
+            <if test="status != null"> #{status},</if>
+            <if test="errorMsg != null and errorMsg != ''"> #{errorMsg},</if>
+            <if test="operTime != null"> #{operTime},</if>
+        </trim>
+    </insert>
+    <select id="selectOperLogList" resultMap="OperLogResult">
+        <include refid="selectOperLog"/>
+        <where>
+            <if test="operId != null"> and oper_id = #{operId}</if>
+            <if test="title != null and title != ''"> and title = #{title}</if>
+            <if test="businessType != null"> and business_type = #{businessType}</if>
+            <if test="method != null and method != ''"> and method = #{method}</if>
+            <if test="requestMethod != null and requestMethod != ''"> and request_method = #{requestMethod}</if>
+            <if test="operatorType != null"> and operator_type = #{operatorType}</if>
+            <if test="operName != null and operName != ''"> and oper_name = #{operName}</if>
+            <if test="deptName != null and deptName != ''"> and dept_name = #{deptName}</if>
+            <if test="operUrl != null and operUrl != ''"> and oper_url = #{operUrl}</if>
+            <if test="operIp != null and operIp != ''"> and oper_ip = #{operIp}</if>
+            <if test="operLocation != null and operLocation != ''"> and oper_location = #{operLocation}</if>
+            <if test="operParam != null and operParam != ''"> and oper_param = #{operParam}</if>
+            <if test="jsonResult != null and jsonResult != ''"> and json_result = #{jsonResult}</if>
+            <if test="status != null"> and status = #{status}</if>
+            <if test="errorMsg != null and errorMsg != ''"> and error_msg = #{errorMsg}</if>
+            <if test="operTime != null"> and oper_time = #{operTime}</if>
+        </where>
+    </select>
+</mapper>

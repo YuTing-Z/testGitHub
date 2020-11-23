@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作日志记录管理</title>
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="/css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-table.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-editable.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-switch/bootstrap-switch.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="/css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="/css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="/css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="/css/sys/user.css">
+    <link rel="stylesheet" href="/css/sys/global.css">
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container" v-show="showList">
+        <div class="row">
+            <form class="form-inline" id="searchForm">
+
+                <div class="form-group">
+                    <label for="title"> 模块标题:</label>
+                    <input type="text" id="title" placeholder="请输入模块标题" name="title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="businessType"> 业务类型:</label>
+                    <input type="text" id="businessType" placeholder="请输入业务类型" name="businessType" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="method"> 方法名称:</label>
+                    <input type="text" id="method" placeholder="请输入方法名称" name="method" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="status"> 操作状态:</label>
+
+                    <select name="status" id="status" class="form-control" style="width: 160px">
+                        <option value="">所有</option>
+                        <option :value="item.dictValue" v-for="item in operLogStateList">{{item.dictLabel}}</option>
+                    </select>
+                </div>
+
+                <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+            </form>
+        </div>
+        <div class="row">
+            <div id="toolbar">
+                <div class="btn-group">
+                    <button id="remove" class="btn btn-danger btn-rounded btn-outline" onclick="$.operate.remove();">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                </div>
+            </div>
+
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+    <div class="container" v-show="!showList">
+        <div class="row">
+            <form class="form-horizontal" id="form-operLog" :model="operLog">
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="operId" v-model="operLog.operId" >
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">模块标题</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="title" v-model="operLog.title" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">业务类型（0其它 1新增 2修改 3删除）</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="businessType" v-model="operLog.businessType" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">方法名称</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="method" v-model="operLog.method" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请求方式</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="requestMethod" v-model="operLog.requestMethod" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作类别（0其它 1后台用户 2手机端用户）</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operatorType" v-model="operLog.operatorType" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作人员</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operName" v-model="operLog.operName" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">部门名称</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="deptName" v-model="operLog.deptName" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请求URL</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operUrl" v-model="operLog.operUrl" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">主机地址</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operIp" v-model="operLog.operIp" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作地点</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operLocation" v-model="operLog.operLocation" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请求参数</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operParam" v-model="operLog.operParam" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">返回参数</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="jsonResult" v-model="operLog.jsonResult" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作状态（0正常 1异常）</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="status" v-model="operLog.status" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">错误消息</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="errorMsg" v-model="operLog.errorMsg" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作时间</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="operTime" v-model="operLog.operTime" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-9">
+                        <input class="btn btn-primary" type="submit" value="提交">
+                        <input type="button" class="btn btn-danger" value="返回" @click="back">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--jquery 脚本 -->
+<script src="/js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="/js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="/js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="/js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="/js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="/js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!-- 显示中文 -->
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!--blockUI的js-->
+<script src="/js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="/js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="/js/plugins/vue/vue.min.js"></script>
+<script src="/js/plugins/vue/axios.min.js"></script>
+<!--<script src="/ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="/js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+
+
+<!--layer-->
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="/js/common.js"></script>
+<script src="/js/monitor/operLog.js"></script>
+
+
+</body>
+</html>

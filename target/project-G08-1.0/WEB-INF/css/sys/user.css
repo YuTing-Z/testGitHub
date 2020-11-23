@@ -1,0 +1,21 @@
+.box-header{
+    border-bottom: 1px solid #eee;
+    padding: 12px 10px 2px 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.box-title{
+    float: left;
+    font-size: 16px;
+}
+
+.box-tools{
+    position: absolute;
+    right: 8px;
+}
+
+.box-tools>button{
+    padding: 0px;
+    background: transparent;
+}

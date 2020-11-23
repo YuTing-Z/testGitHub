@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="project-G08:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b563443a-1839-4821-87c0-382557254542" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="spring-beans.schema" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:/soft/maven" />
+        <option name="userSettingsFile" value="D:\soft\maven\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kGzFQlqBAym7zsngvigRTftr5V" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\java150\code\project-G08\src\main\webapp" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="net.wanho.controller.monitor" />
+      <recent name="net.wanho.service.impl" />
+      <recent name="net.wanho.service" />
+      <recent name="net.wanho.mapper" />
+      <recent name="net.wanho.po.sys.ext" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\java150\code\project-G08\src\main\resources\mapper\sys" />
+      <recent name="D:\java150\code\project-G08\src\main\webapp" />
+      <recent name="D:\java150\code\project-G08\src\main\resources" />
+      <recent name="D:\java150\code\project-G08\src\main\resources\properties" />
+      <recent name="D:\java150\code\project-G08\src\main\webapp\WEB-INF" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="smart" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY">
+      <option name="adminPort" value="8005" />
+      <option name="contextPath" value="/" />
+      <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
+      <option name="envOptions" />
+      <option name="passParentEnvironmentVariables" value="true" />
+      <option name="port" value="8080" />
+      <option name="tomcatInfo">
+        <TomcatInfo>
+          <option name="name" value="Apache Tomcat 8.5.31" />
+          <option name="number" value="0" />
+          <option name="path" value="C:\Users\Administrator\Desktop\zyt3\tools\apache-tomcat-8.5.31-windows\apache-tomcat-8.5.31" />
+          <option name="version" value="8.5.31.0" />
+        </TomcatInfo>
+      </option>
+      <option name="vmOptions" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="project-G08:war exploded" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b563443a-1839-4821-87c0-382557254542" name="Default Changelist" comment="" />
+      <created>1605341612232</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605341612232</updated>
+      <workItem from="1605341615516" duration="5212000" />
+      <workItem from="1605347626861" duration="6786000" />
+      <workItem from="1605400919643" duration="2574000" />
+      <workItem from="1605486372691" duration="27452000" />
+      <workItem from="1605573064548" duration="22919000" />
+      <workItem from="1605659559770" duration="28893000" />
+      <workItem from="1605746048107" duration="9723000" />
+      <workItem from="1605768089491" duration="397000" />
+      <workItem from="1605772877409" duration="41000" />
+      <workItem from="1605774236258" duration="1458000" />
+      <workItem from="1605775913283" duration="9000" />
+      <workItem from="1605832381150" duration="17300000" />
+      <workItem from="1606024507019" duration="15191000" />
+      <workItem from="1606091831513" duration="11558000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="482" y="169" key="#BuildArtifactsBeforeRunChooser" timestamp="1605352212520">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="482" y="169" key="#BuildArtifactsBeforeRunChooser/0.0.1366.728@0.0.1366.728" timestamp="1605352212520" />
+    <state x="156" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605352214276">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="156" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1605352214276" />
+    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser" timestamp="1606035860779">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1606035860779" />
+    <state x="694" y="146" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1605665830282">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="694" y="146" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1605665830282" />
+    <state x="862" y="195" width="441" height="295" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1606036200207">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="862" y="195" width="441" height="295" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.728@0.0.1366.728" timestamp="1606036200207" />
+    <state x="417" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605487770215">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="417" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1605487770215" />
+    <state x="402" y="107" key="FileChooserDialogImpl" timestamp="1605772910594">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="402" y="107" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1605772910594" />
+    <state width="1322" height="2" key="GridCell.Tab.0.bottom" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.0.center" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.0.left" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.0.right" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.1.bottom" timestamp="1606112277812">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1606112277812" />
+    <state width="1322" height="2" key="GridCell.Tab.1.center" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.1.left" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state width="1322" height="2" key="GridCell.Tab.1.right" timestamp="1606112277811">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="2" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1606112277811" />
+    <state x="110" y="109" width="1186" height="513" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606109910960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="110" y="109" width="1186" height="513" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1606109910960" />
+    <state x="381" y="187" key="com.intellij.ide.util.TipDialog" timestamp="1605746048091">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="381" y="187" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1605746048091" />
+    <state x="53" y="58" key="new project wizard" timestamp="1605768488398">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="53" y="58" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1605768488398" />
+    <state x="850" y="0" key="refactoring.ChangeSignatureDialog" timestamp="1605665247046">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="850" y="0" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1605665247046" />
+    <state x="339" y="157" key="run.anything.popup" timestamp="1605350667926">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="339" y="157" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1605350667926" />
+    <state x="341" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1605683845204">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="341" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1605683845204" />
+  </component>
+</project>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.wanho.mapper.sys.LogininforMapper">
+    <resultMap id="LogininforResult" type="Logininfor" >
+        <id column="info_id" property="infoId"/><!-- 访问ID -->
+        <result column="user_name" property="userName"/><!-- 用户账号 -->
+        <result column="ipaddr" property="ipaddr"/><!-- 登录IP地址 -->
+        <result column="login_location" property="loginLocation"/><!-- 登录地点 -->
+        <result column="browser" property="browser"/><!-- 浏览器类型 -->
+        <result column="os" property="os"/><!-- 操作系统 -->
+        <result column="status" property="status"/><!-- 登录状态（0成功 1失败） -->
+        <result column="msg" property="msg"/><!-- 提示消息 -->
+        <result column="login_time" property="loginTime"/><!-- 访问时间 -->
+    </resultMap>
+    <insert id="insertLogininfor" parameterType="Logininfor" useGeneratedKeys="true" keyProperty="infoId" >
+        insert into sys_logininfor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''"> user_name,</if>
+            <if test="ipaddr != null and ipaddr != ''"> ipaddr,</if>
+            <if test="loginLocation != null and loginLocation != ''"> login_location,</if>
+            <if test="browser != null and browser != ''"> browser,</if>
+            <if test="os != null and os != ''"> os,</if>
+            <if test="status != null and status != ''"> status,</if>
+            <if test="msg != null and msg != ''"> msg,</if>
+            <if test="loginTime != null"> login_time,</if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''"> #{userName},</if>
+            <if test="ipaddr != null and ipaddr != ''"> #{ipaddr},</if>
+            <if test="loginLocation != null and loginLocation != ''"> #{loginLocation},</if>
+            <if test="browser != null and browser != ''"> #{browser},</if>
+            <if test="os != null and os != ''"> #{os},</if>
+            <if test="status != null and status != ''"> #{status},</if>
+            <if test="msg != null and msg != ''"> #{msg},</if>
+            <if test="loginTime != null"> #{loginTime},</if>
+        </trim>
+    </insert>
+    <sql id="selectLogininfor">
+        select info_id,user_name,ipaddr,login_location,browser,os,status,msg,login_time from sys_logininfor
+    </sql>
+    <select id="selectLogininforList" resultMap="LogininforResult">
+        <include refid="selectLogininfor"/>
+        <where>
+            <if test="infoId != null"> and info_id = #{infoId}</if>
+            <if test="userName != null and userName != ''"> and user_name = #{userName}</if>
+            <if test="ipaddr != null and ipaddr != ''"> and ipaddr = #{ipaddr}</if>
+            <if test="loginLocation != null and loginLocation != ''"> and login_location = #{loginLocation}</if>
+            <if test="browser != null and browser != ''"> and browser = #{browser}</if>
+            <if test="os != null and os != ''"> and os = #{os}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+            <if test="msg != null and msg != ''"> and msg = #{msg}</if>
+            <if test="loginTime != null"> and login_time = #{loginTime}</if>
+        </where>
+    </select>
+</mapper>

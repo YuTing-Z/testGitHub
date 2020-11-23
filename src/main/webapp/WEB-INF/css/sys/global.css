@@ -1,0 +1,49 @@
+body,#tree a{
+    font-size: 13px;
+    color: #676a6c;
+}
+
+
+/*容器设置*/
+.container{
+    background-color: #f3f3f4;
+    height: 100%;
+    width: 100%;
+}
+
+.container>.row{
+    background-color: #fff;
+    padding: 10px 10px;
+    margin: 30px 1% 0px 1%;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.2);
+}
+
+#searchForm{
+    margin: 0px -15px;
+}
+
+form.form-inline{
+    padding-left: 20px;
+}
+
+.ui-layout-resizer,.ui-layout-toggler{
+    background-color: #ccc;
+}
+.ui-layout-toggler{
+    border-width: 0px;
+}
+
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #1AB394;
+    color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+}
+
+.treetable-thead th{
+    text-align: center;
+}

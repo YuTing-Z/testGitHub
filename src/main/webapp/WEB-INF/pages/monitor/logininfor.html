@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统访问记录管理</title>
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="/css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-table.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-table/bootstrap-editable.css">
+    <link rel="stylesheet" href="/css/plugins/bootstrap-switch/bootstrap-switch.css">
+
+    <!--ztree-->
+    <link rel="stylesheet" href="/css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="/css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="/css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="/css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="/css/sys/user.css">
+    <link rel="stylesheet" href="/css/sys/global.css">
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container" v-show="showList">
+        <div class="row">
+            <form class="form-inline" id="searchForm">
+
+                <div class="form-group">
+                    <label for="userName"> 用户账号:</label>
+                    <input type="text" id="userName" placeholder="请输入用户账号" name="userName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ipaddr"> 登录IP地址:</label>
+                    <input type="text" id="ipaddr" placeholder="请输入登录IP地址" name="ipaddr" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="loginLocation"> 登录地点:</label>
+                    <input type="text" id="loginLocation" placeholder="请输入登录地点" name="loginLocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="status"> 登录状态:</label>
+
+                    <select name="status" id="status" class="form-control" style="width: 160px">
+                        <option value="">所有</option>
+                        <option :value="item.dictValue" v-for="item in logininforStateList">{{item.dictLabel}}</option>
+                    </select>
+                </div>
+
+                <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+            </form>
+        </div>
+        <div class="row">
+            <div id="toolbar">
+                <div class="btn-group">
+                    <button id="remove" class="btn btn-danger btn-rounded btn-outline" onclick="$.operate.remove();">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                </div>
+            </div>
+
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+    <div class="container" v-show="!showList">
+        <div class="row">
+            <form class="form-horizontal" id="form-logininfor" :model="logininfor">
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="infoId" v-model="logininfor.infoId" >
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户账号</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="userName" v-model="logininfor.userName" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">登录IP地址</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="ipaddr" v-model="logininfor.ipaddr" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">登录地点</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="loginLocation" v-model="logininfor.loginLocation" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">浏览器类型</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="browser" v-model="logininfor.browser" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作系统</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="os" v-model="logininfor.os" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">登录状态（0成功 1失败）</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="status" v-model="logininfor.status" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">提示消息</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="msg" v-model="logininfor.msg" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">访问时间</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="loginTime" v-model="logininfor.loginTime" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-9">
+                        <input class="btn btn-primary" type="submit" value="提交">
+                        <input type="button" class="btn btn-danger" value="返回" @click="back">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--jquery 脚本 -->
+<script src="/js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="/js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="/js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="/js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="/js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="/js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!-- 显示中文 -->
+<script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<!--blockUI的js-->
+<script src="/js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="/js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="/js/plugins/vue/vue.min.js"></script>
+<script src="/js/plugins/vue/axios.min.js"></script>
+<!--<script src="/ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="/js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+
+
+<!--layer-->
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="/js/common.js"></script>
+<script src="/js/monitor/logininfor.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字典数据</title>
+    <base href="/">
+
+    <!--网页图标-->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--bootstrap 样式-->
+    <link rel="stylesheet" href="css/plugins/bootstrap/bootstrap.min.css">
+
+    <!--fontawesome图标样式-->
+    <link href="css/plugins/font-awesome/font-awesome.css" rel="stylesheet">
+
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="css/plugins/bootstrap-table/src/bootstrap-table.css">
+    <link rel="stylesheet" href="css/plugins/bootstrap-editable/bootstrap-editable.css">
+
+
+    <!--ztree-->
+    <link rel="stylesheet" href="css/plugins/jquery-ztree/3.5/css/metro/zTreeStyle.css">
+
+    <!--select2-->
+    <link rel="stylesheet" href="css/plugins/select/select2.css">
+
+    <!--icheck-->
+    <link rel="stylesheet" href="css/plugins/iCheck/custom.css">
+
+    <!-- layer样式 -->
+    <link rel="stylesheet" href="css/plugins/layer/skin/layer.css">
+
+    <!--bootstrap-validator验证样式-->
+    <link rel="stylesheet" href="css/plugins/bootstrap-validator/bootstrapValidator.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!--自定义css-->
+    <link rel="stylesheet" href="css/sys/user.css">
+    <link rel="stylesheet" href="css/sys/global.css">
+
+</head>
+<body>
+
+<div id="app">
+    <!-- 版心 -->
+    <div class="container" v-show="showList">
+        <div class="row">
+            <!--查询条件行  -->
+            <form class="form-inline" id="searchForm">
+
+                <input type="hidden" name="dictId" v-model="dictData.dictId">
+                <input type="hidden" name="dictType" v-model="dictData.dictType">
+
+                <div class="form-group">
+                    <label class="control-label">字典标签：</label>
+                    <input type="text" name="dictLabel" class="form-control" placeholder="请输入字典标签">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">状态：</label>
+
+                    <select class="form-control" name="status">
+                        <option value="">所有</option>
+                        <option :value="state.dictValue" v-for="state in dictDataStateList">
+                            {{state.dictLabel}}
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <a href="javascript:void(0);" class="btn btn-primary btn-rounded" onclick="$.table.refresh()">搜索</a>
+                <a href="javascript:void(0);" class="btn btn-warning btn-rounded" onclick="$.form.reset()">重置</a>
+
+            </form>
+        </div>
+
+        <!-- bootstrap表格行 -->
+        <div class="row">
+            <div id="toolbar">
+                <div class="btn-group">
+                    <button id="add" class="btn btn-primary btn-rounded btn-outline" @click="add">
+                        <i class="fa fa-plus"></i> 新增
+                    </button>
+                    <button id="remove" class="btn btn-danger btn-rounded btn-outline" onclick="$.operate.remove();">
+                        <i class="fa fa-trash-o"></i> 删除
+                    </button>
+                </div>
+            </div>
+
+            <table id="bootstrap-table"></table>
+        </div>
+
+    </div>
+
+    <div class="container" v-show="!showList">
+        <div class="row">
+            <form class="form-horizontal m" id="form-dictData" :model="dictData">
+                <input id="dictCode" name="dictCode" type="hidden">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">字典标签：{{dictData.dictLabel}}</label>
+                    <div class="col-sm-8">
+                        <input id="dictLabel" name="dictLabel" v-model="dictData.dictLabel" class="form-control"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">字典键值：{{dictData.dictValue}}</label>
+                    <div class="col-sm-8">
+                        <input id="dictValue" name="dictValue" v-model="dictData.dictValue" class="form-control"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">字典类型：{{dictData.dictType}}</label>
+                    <div class="col-sm-8">
+                        <input name="dictType" v-model="dictData.dictId" class="form-control" type="hidden">
+                        <input id="dictType" name="dictType" v-model="dictData.dictType" readonly class="form-control"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">样式属性：{{dictData.cssClass}}</label>
+                    <div class="col-sm-8">
+                        <input id="cssClass" name="cssClass" class="form-control" v-model="dictData.cssClass"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">字典排序：{{dictData.dictSort}}</label>
+                    <div class="col-sm-8">
+                        <input id="dictSort" name="dictSort" class="form-control" v-model="dictData.dictSort"
+                               type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">是否默认：{{dictData.isDefault}}</label>
+                    <div class="col-sm-8">
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="isDefault" id="type1" type="radio" value="0" v-model="dictData.isDefault">
+                            <label for="type1">
+                                是
+                            </label>
+                        </div>
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="isDefault" id="type2" type="radio" value="1" v-model="dictData.isDefault">
+                            <label for="type2">
+                                否
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">状态：{{dictData.status}}</label>
+                    <div class="col-sm-8">
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="status" id="state1" checked type="radio" value="0" v-model="dictData.status">
+                            <label for="type1">
+                                正常
+                            </label>
+                        </div>
+                        <div class="radio radio-success radio-inline i-checks">
+                            <input name="status" id="state2" type="radio" value="1" v-model="dictData.status">
+                            <label for="type2">
+                                停用
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">备注：{{dictData.remark}}</label>
+                    <div class="col-sm-8">
+                        <textarea id="remark" name="remark" class="form-control" v-model="dictData.remark"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-9">
+                        <input class="btn btn-primary" type="submit" value="提交">
+                        <input type="button" class="btn btn-danger" value="返回" @click="back">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<!--jquery 脚本 -->
+<script src="js/plugins/jquery/jquery.min.js"></script>
+
+<!--bootstrap脚本-->
+<script src="js/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!--bootstrap-table 插件-->
+<script src="js/plugins/bootstrap-table/src/bootstrap-table.js"></script>
+<!--bootstrap-table 导出图标-->
+<script src="js/plugins/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+
+<!--bootstrap-table 导出功能-->
+<script src="js/plugins/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js"></script>
+<script src="js/plugins/bootstrap-export/tableExport.js"></script>
+
+<!--blockUI的js-->
+<script src="js/plugins/blockUI/jquery.blockUI.js"></script>
+
+<!--ztree-->
+<script src="js/plugins/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js"></script>
+
+
+<!--vue-->
+<script src="js/plugins/vue/vue.min.js"></script>
+<script src="js/plugins/vue/axios.min.js"></script>
+<!--<script src="ajax/libs/vue/vue-validator.min.js"></script>-->
+
+<!-- jquery-validate 表单验证插件 -->
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/validate/messages_zh.min.js"></script>
+<script src="js/plugins/validate/jquery.validate.extend.js"></script>
+
+<!--bootstrap-validator表单验证-->
+<script src="js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="js/plugins/bootstrap-validator/zh_CN.js"></script>
+
+<!--select2-->
+<script src="js/plugins/select/select2.js"></script>
+
+<!--icheck-->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<!--laydate-->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+
+<!--layer-->
+<script src="js/plugins/layer/layer.min.js"></script>
+
+<!--自定义js-->
+<script src="js/common.js"></script>
+<script src="js/sys/dictData.js"></script>
+
+</body>
+</html>

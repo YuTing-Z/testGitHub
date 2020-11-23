@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.wanho.mapper.sys.DictTypeMapper">
+    <resultMap id="DictTypeResult" type="DictType" >
+        <id column="dict_id" property="dictId"/><!-- 字典主键 -->
+        <result column="dict_name" property="dictName"/><!-- 字典名称 -->
+        <result column="dict_type" property="dictType"/><!-- 字典类型 -->
+        <result column="status" property="status"/><!-- 状态（0正常 1停用） -->
+        <result column="create_by" property="createBy"/><!-- 创建者 -->
+        <result column="create_time" property="createTime"/><!-- 创建时间 -->
+        <result column="update_by" property="updateBy"/><!-- 更新者 -->
+        <result column="update_time" property="updateTime"/><!-- 更新时间 -->
+        <result column="remark" property="remark"/><!-- 备注 -->
+    </resultMap>
+
+    <sql id="selectDictType">
+        select dict_id,dict_name,dict_type,status,create_by,create_time,update_by,update_time,remark from sys_dict_type
+    </sql>
+    <insert id="insertDictType" parameterType="DictType" useGeneratedKeys="true" keyProperty="dictId">
+        insert into sys_dict_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dictName != null and dictName != ''"> dict_name,</if>
+            <if test="dictType != null and dictType != ''"> dict_type,</if>
+            <if test="status != null and status != ''"> status,</if>
+            <if test="createBy != null and createBy != ''"> create_by,</if>
+            <if test="createTime != null"> create_time,</if>
+            <if test="updateBy != null and updateBy != ''"> update_by,</if>
+            <if test="updateTime != null"> update_time,</if>
+            <if test="remark != null and remark != ''"> remark,</if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dictName != null and dictName != ''"> #{dictName},</if>
+            <if test="dictType != null and dictType != ''"> #{dictType},</if>
+            <if test="status != null and status != ''"> #{status},</if>
+            <if test="createBy != null and createBy != ''"> #{createBy},</if>
+            <if test="createTime != null"> #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''"> #{updateBy},</if>
+            <if test="updateTime != null"> #{updateTime},</if>
+            <if test="remark != null and remark != ''"> #{remark},</if>
+        </trim>
+    </insert>
+
+    <select id="selectDictTypeList" resultMap="DictTypeResult">
+        <include refid="selectDictType"/>
+        <where>
+            <if test="dictName != null and dictName != ''"> and dict_name = #{dictName}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    <select id="getDictTypeById" resultMap="DictTypeResult">
+        <include refid="selectDictType"/>
+        where dict_id = #{dictId}
+    </select>
+</mapper>
